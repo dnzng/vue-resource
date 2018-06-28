@@ -42,5 +42,21 @@ export default {
 
       return format
     }
-  })()
+  })(),
+
+  /**
+   * 根据 页码、每页总数，
+   * 从数组中获取第几页的数据
+   * @param  {Number} pageNum  页码
+   * @param  {Number} pageSize 每页总数
+   * @param  {Array}  arr      要获取数据的数组
+   * @return {Array}
+   */
+  getPage (pageNum, pageSize, arr) {
+    let offset = (pageNum - 1) * pageSize
+
+    return (offset + pageSize >= arr.length)
+            ? arr.slice(offset, arr.length)
+            : arr.slice(offset, offset + pageSize)
+  }
 }
