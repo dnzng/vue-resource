@@ -1,6 +1,6 @@
 /**
- * 必须对 http 请求风筝一层，
- * 防止 axios 被换成别的库
+ * 必须对 http 请求封装一层，
+ * 防止 axios 被换成别的库 
  */
 
 import axios from 'axios'
