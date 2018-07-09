@@ -58,5 +58,17 @@ export default {
     return (offset + pageSize >= arr.length)
             ? arr.slice(offset, arr.length)
             : arr.slice(offset, offset + pageSize)
+  },
+
+  /**
+   * 保留小数点后 n 位有效数字
+   * 直接使用 Number.prototype.toFixed() 会四舍五入
+   */
+  toFixed (num, keep) {
+    if (typeof num !== 'number') {
+      num = Number(num)
+    }
+
+    return window.parseFloat(num.toFixed(keep + 1).slice(0, -1))
   }
 }
