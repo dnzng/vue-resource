@@ -1,6 +1,6 @@
 /**
  * 必须对 http 请求封装一层，
- * 防止 axios 被换成别的库 
+ * 防止 axios 被换成别的库
  */
 
 import axios from 'axios'
@@ -18,8 +18,8 @@ $.interceptors.request.use(
     // Do something before request is sent
     return config
   },
-  err => {
-    return Promise.reject(err)
+  error => {
+    return Promise.reject(error)
   }
 )
 
