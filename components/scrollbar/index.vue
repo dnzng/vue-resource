@@ -7,9 +7,6 @@
 </template>
 
 <script>
-  // 滚动步长
-  const step = 20
-
   export default {
     name: 'ScrollBar',
     data () {
@@ -19,26 +16,26 @@
     },
     methods: {
       handleScroll (e) {
-        let direction = e.wheelDelta || -e.deltaY
-        let $container = this.$refs.scrollContainer
-        let $containerHeight = $container.offsetHeight
-        let $wrapper = this.$refs.scrollWrapper
-        let $wrapperHeight = $wrapper.offsetHeight
+        // 内容底部留白高度
+        const blankHeight = 15
+        // wheelDelta: 非标准属性; deltaY: DOM3 标准属性
+        // https://developer.mozilla.org/en-US/docs/Web/Events/mousewheel
+        const eventDelta = e.wheelDelta || -e.deltaY * 3
+        const $container = this.$refs.scrollContainer
+        const $containerHeight = $container.offsetHeight
+        const $wrapper = this.$refs.scrollWrapper
+        const $wrapperHeight = $wrapper.offsetHeight + blankHeight
 
-        // 向上
-        if (direction > 0) {
-          this.top = Math.min(0, this.top + step)
-        } else {
-          // 向下
-          if ($containerHeight < $wrapperHeight) {
-            if (this.top < -($wrapperHeight - $containerHeight)) {
-              this.top = this.top
-            } else {
-              this.top = Math.max(this.top - step, $containerHeight - $wrapperHeight)
-            }
+        if (eventDelta > 0) { // 向上滚动
+          this.top = Math.min(0, this.top + eventDelta)
+        } else if ($wrapperHeight > $containerHeight) { //只在 内容高度 + 留白高度 > 外部容器高度 时，才会向下滚动
+          if (this.top < $containerHeight - $wrapperHeight) {
+            this.top = this.top
           } else {
-            this.top = 0
+            this.top = Math.max(this.top + eventDelta, $containerHeight - $wrapperHeight)
           }
+        } else { // 内容高度 < 外部容器高度，top = 0
+          this.top = 0
         }
       }
     }
