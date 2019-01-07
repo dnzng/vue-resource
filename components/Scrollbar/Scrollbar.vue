@@ -7,6 +7,9 @@
 </template>
 
 <script>
+  // 内容底部留白高度
+  const blankHeight = 15
+
   export default {
     name: 'ScrollBar',
     data () {
@@ -16,8 +19,6 @@
     },
     methods: {
       handleScroll (e) {
-        // 内容底部留白高度
-        const blankHeight = 15
         // wheelDelta: 非标准属性; deltaY: DOM3 标准属性
         // https://developer.mozilla.org/en-US/docs/Web/Events/mousewheel
         const eventDelta = e.wheelDelta || -e.deltaY * 3
