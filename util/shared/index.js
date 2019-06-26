@@ -48,11 +48,11 @@ export function toRawType (value) {
  * Strict object type check. Only returns true
  * for plain JavaScript objects.
  */
-export function isPlainObject (obj: any): boolean {
+export function isPlainObject (obj) {
   return _toString.call(obj) === '[object Object]'
 }
 
-export function isRegExp (v: any): boolean {
+export function isRegExp (v) {
   return _toString.call(v) === '[object RegExp]'
 }
 
