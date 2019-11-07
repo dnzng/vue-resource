@@ -1,5 +1,5 @@
 <template>
-  <div class="autocomplete-wrap" :class="getCustomClass">
+  <div class="autocomplete-wrapper" :class="getCustomClass">
     <div class="autocomplete-input">
       <input
         type="text"
@@ -175,11 +175,11 @@
 </script>
 
 <style lang="scss" scoped>
-  .autocomplete-wrap {
+  .autocomplete-wrapper {
     background-color: #fff;
   }
 
-  .autocomplete-wrap .autocomplete-input {
+  .autocomplete-wrapper .autocomplete-input {
     position: relative;
     input {
       display: block;
