@@ -9,8 +9,8 @@ function padLeftZero (str) {
 
 /**
  * 时间戳转日期
- * @param  {Number} timestamp  时间戳
- * @return {String} format     格式
+ * @param  {number} timestamp  时间戳
+ * @return {string} format     格式
  *
  * 如：
  * timestampToDate(21312313, 'yyyy-MM-dd HH:mm:ss')
