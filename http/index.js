@@ -47,21 +47,12 @@ $.interceptors.response.use(
 )
 
 export default {
-  get (url, params, success) {
-    $.get(url, {
+  get (url, params) {
+    return $.get(url, {
       params
-    }).then(res => {
-      if (typeof success === 'function') {
-        success(res.data)
-      }
     })
   },
-  post (url, params, success) {
-    $.post(url, params)
-      .then(res => {
-        if (typeof success === 'function') {
-          success(res.data)
-        }
-      })
+  post (url, params) {
+    return $.post(url, params)
   }
 }
