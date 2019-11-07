@@ -6,15 +6,14 @@
         :value="value"
         :placeholder="placeholder"
         @input="handleInput($event.target.value.trim())"
-        @keydown.up="handleArrowUp"
-        @keydown.down="handleArrowDown"
+        @keydown.up="handleUp"
+        @keydown.down="handleDown"
         @keydown.enter="handleEnter"
         @click.stop
         ref="ipt">
-      <ul
-        v-if="listData.length > 0">
+      <ul v-if="list.length > 0">
         <li
-          v-for="(item, index) in listData"
+          v-for="(item, index) in list"
           @click.stop="handleListClick(item)"
           :key="index"
           ref="lies">
@@ -60,7 +59,7 @@
          * [{ name: '北京市', value：'北京' }]
          * 因为，输入框的值，会使用 value 字段
          */
-        listData: [],
+        list: [],
         // 当前下标
         index: -1
       }
@@ -84,21 +83,21 @@
       },
       // 隐藏列表
       hideList () {
-        this.listData = []
+        this.list = []
       },
       // input 事件
       handleInput (value) {
         // 不为空时才进行查询
         if (value) {
-          this.fetchSuggestions(value, listData => {
-            this.listData = listData
+          this.fetchSuggestions(value, list => {
+            this.list = list
           })
         } else {
-          this.listData = []
+          this.list = []
         }
 
         // 有数据时，重置样式
-        if (this.listData.length > 0) {
+        if (this.list.length > 0) {
           this.resetStyle()
         }
 
@@ -114,7 +113,7 @@
       // 列表点击事件
       handleListClick (item) {
         this.$refs.ipt.value = item.value
-        this.listData = []
+        this.list = []
         this.index = -1
         // 触发双向绑定的 input 事件
         this.$emit('input', item.value)
@@ -122,8 +121,8 @@
         this.$emit('select', item)
       },
       // 向下箭头事件
-      handleArrowDown () {
-        let len = this.listData.length
+      handleDown () {
+        let len = this.list.length
 
         if (len === 0) { return }
 
@@ -134,8 +133,8 @@
         this.toIndex()
       },
       // 向上箭头事件
-      handleArrowUp () {
-        let len = this.listData.length
+      handleUp () {
+        let len = this.list.length
 
         if (len === 0) return
 
@@ -147,11 +146,11 @@
       },
       // 回车
       handleEnter () {
-        let len = this.listData.length
+        let len = this.list.length
 
         if (len === 0) return
 
-        let item = this.listData[this.index]
+        let item = this.list[this.index]
 
         this.handleListClick(item)
       },
@@ -161,7 +160,7 @@
 
         this.$refs.lies[this.index].classList.add('on')
 
-        let item = this.listData[this.index]
+        let item = this.list[this.index]
         this.$refs.ipt.value = item.value
         this.$emit('input', item.value)
       },
