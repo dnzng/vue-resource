@@ -8,7 +8,7 @@ import { Notification } from 'element-ui'
 
 const $ = axios.create({
   baseURL: 'https://some-domain.com/api/',
-  timeout: 1000,
+  timeout: 10000,
   headers: {'X-Custom-Header': 'foo'}
 })
 
