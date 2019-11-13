@@ -6,53 +6,38 @@
 import axios from 'axios'
 import { Notification } from 'element-ui'
 
-const $ = axios.create({
-  baseURL: 'https://some-domain.com/api/',
-  timeout: 10000,
+const http = axios.create({
+  baseURL: '/api',
+  timeout: 30000,
   headers: {'X-Custom-Header': 'foo'}
 })
 
-// http request 拦截器
-$.interceptors.request.use(
-  config => {
-    // Do something before request is sent
-    return config
-  },
-  error => {
-    return Promise.reject(error)
-  }
-)
-
 // http response 拦截器
-$.interceptors.response.use(
+http.interceptors.response.use(
   response => {
-    // 假设 code: 0 是获取数据失败，但 http 是成功的
-    if (response.data.code === 0) {
-      Notification.error({
-        title: '错误',
-        message: response.data.error ? response.data.error.msg : String(response.data)
-      })
+    const { msg, data, error } = response.data;
+
+    if (error) {
+      Notification.error(error.msg || `${response.data}`);
+      return false;
     }
 
-    return response
+    if (msg || data === undefined) {
+      message.error(msg || `${response.data}`);
+      return false;
+    }
+
+    return data;
   },
   error => {
-    Notification.error({
-      title: '异常',
-      message: '服务器异常,请稍后重试'
-    })
-
-    return Promise.reject(error)
+    if ((error.code === 'ECONNABORTED')) {
+      message.error('服务器繁忙，请稍后重试');
+    }
+    
+    return Promise.reject(false);
   }
-)
+);
 
-export default {
-  get (url, params) {
-    return $.get(url, {
-      params
-    })
-  },
-  post (url, params) {
-    return $.post(url, params)
-  }
+export default function request(url, options = {}) {
+  return http({ url, ...options })
 }
