@@ -29,6 +29,7 @@
 <script>
   export default {
     name: 'Autocomplete',
+
     props: {
       // 自定义类名
       customClass: {
@@ -51,6 +52,7 @@
         default: '请输入'
       }
     },
+    
     data () {
       return {
         /**

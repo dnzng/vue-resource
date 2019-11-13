@@ -12,6 +12,7 @@
 
   export default {
     name: 'ScrollBar',
+
     data () {
       return {
         top: 0
