@@ -1,2 +1,2 @@
-Vue 开发过程中写过的轮子。
+Some resources about Vue 。
 
