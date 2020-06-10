@@ -1,6 +1,6 @@
 <template>
-  <div class="autocomplete-wrapper" :class="getCustomClass">
-    <div class="autocomplete-input">
+  <div class="sky-autocomplete__wrapper" :class="getCustomClass">
+    <div class="sky-autocomplete__body">
       <input
         type="text"
         :value="value"
@@ -28,7 +28,7 @@
 
 <script>
   export default {
-    name: 'Autocomplete',
+    name: 'SkyAutocomplete',
 
     props: {
       // 自定义类名
@@ -177,11 +177,11 @@
 </script>
 
 <style lang="scss" scoped>
-  .autocomplete-wrapper {
+  .sky-autocomplete__wrapper {
     background-color: #fff;
   }
 
-  .autocomplete-wrapper .autocomplete-input {
+  .sky-autocomplete__wrapper .sky-autocomplete__body {
     position: relative;
     input {
       display: block;

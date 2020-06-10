@@ -1,6 +1,6 @@
 <template>
-  <div class="scroll-container" ref="scrollContainer" @wheel.prevent="handleScroll" >
-    <div class="scroll-wrapper" ref="scrollWrapper" :style="{top: top + 'px'}">
+  <div class="sky-scroll__container" ref="scrollContainer" @wheel.prevent="handleScroll" >
+    <div class="sky-scroll__wrapper" ref="scrollWrapper" :style="{top: top + 'px'}">
       <slot></slot>
     </div>
   </div>
@@ -11,7 +11,7 @@
   const blankHeight = 15
 
   export default {
-    name: 'ScrollBar',
+    name: 'SkyScrollBar',
 
     data () {
       return {
@@ -45,11 +45,11 @@
 </script>
 
 <style lang="scss">
-  .scroll-container {
+  .sky-scroll__container {
     width: 100%;
     height: 100%;
     position: relative;
-    .scroll-wrapper {
+    .sky-scroll__wrapper {
       position: absolute;
       width: 100%!important;
     }
