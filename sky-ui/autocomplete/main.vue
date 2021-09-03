@@ -1,20 +1,20 @@
 <template>
-  <div class="sky-autocomplete__wrapper" :class="getCustomClass">
-    <div class="sky-autocomplete__body">
+  <div class="sk-autocomplete__wrapper" :class="getCustomClass">
+    <div class="sk-autocomplete__body">
       <input
         type="text"
         :value="value"
         :placeholder="placeholder"
-        @input="handleInput($event.target.value.trim())"
-        @keydown.up="handleUp"
-        @keydown.down="handleDown"
-        @keydown.enter="handleEnter"
+        @input="onInput($event.target.value.trim())"
+        @keydown.up="onKeydownUp"
+        @keydown.down="onKeydownDown"
+        @keydown.enter="onKeydownEnter"
         @click.stop
         ref="ipt">
       <ul v-if="list.length > 0">
         <li
           v-for="(item, index) in list"
-          @click.stop="handleListClick(item)"
+          @click.stop="onClickItem(item)"
           :key="index"
           ref="lies">
           <slot name="item" :item="item" :index="index">
@@ -28,7 +28,7 @@
 
 <script>
   export default {
-    name: 'SkyAutocomplete',
+    name: 'SkAutocomplete',
 
     props: {
       // 自定义类名
@@ -37,10 +37,6 @@
       },
       // 获取提示数据的逻辑
       fetchSuggestions: {
-        type: Function
-      },
-      // input 事件的回调
-      onInput: {
         type: Function
       },
       // 双向数据绑定值
@@ -88,7 +84,7 @@
         this.list = []
       },
       // input 事件
-      handleInput (value) {
+      onInput (value) {
         // 不为空时才进行查询
         if (value) {
           this.fetchSuggestions(value, list => {
@@ -107,13 +103,9 @@
         this.index = -1
         // 触发双向绑定的 input 事件
         this.$emit('input', value)
-        // 触发自定义的 onInput 回调
-        if (typeof this.onInput === 'function') {
-          this.onInput.call(this.$parent)
-        }
       },
       // 列表点击事件
-      handleListClick (item) {
+      onClickItem (item) {
         this.$refs.ipt.value = item.value
         this.list = []
         this.index = -1
@@ -123,10 +115,10 @@
         this.$emit('select', item)
       },
       // 向下箭头事件
-      handleDown () {
+      onKeydownDown () {
         let len = this.list.length
 
-        if (len === 0) { return }
+        if (len === 0) return
 
         if (++this.index >= len) {
           this.index = 0
@@ -135,7 +127,7 @@
         this.toIndex()
       },
       // 向上箭头事件
-      handleUp () {
+      onKeydownUp () {
         let len = this.list.length
 
         if (len === 0) return
@@ -147,14 +139,14 @@
         this.toIndex()
       },
       // 回车
-      handleEnter () {
+      onKeydownEnter () {
         let len = this.list.length
 
         if (len === 0) return
 
         let item = this.list[this.index]
 
-        this.handleListClick(item)
+        this.onClickItem(item)
       },
       // 转到第index个项
       toIndex () {
@@ -176,12 +168,12 @@
   }
 </script>
 
-<style lang="scss" scoped>
-  .sky-autocomplete__wrapper {
+<style lang="scss">
+  .sk-autocomplete__wrapper {
     background-color: #fff;
   }
 
-  .sky-autocomplete__wrapper .sky-autocomplete__body {
+  .sk-autocomplete__body {
     position: relative;
     input {
       display: block;

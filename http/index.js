@@ -1,43 +1,53 @@
-/**
- * 必须对 http 请求封装一层，
- * 防止 axios 被换成别的库
- */
-
 import axios from 'axios'
-import { Notification } from 'element-ui'
+import { Loading, Toast } from 'sk-ui'
 
-const http = axios.create({
-  baseURL: '/api',
-  timeout: 30000,
-  headers: {'X-Custom-Header': 'foo'}
-})
-
-// http response 拦截器
-http.interceptors.response.use(
-  response => {
-    const { msg, data, error } = response.data;
-
-    if (error) {
-      Notification.error(error.msg || `${response.data}`);
-      return false;
+function createHttp (options) {
+  if (typeof options === 'string') {
+    options = {
+      test: '/',
+      prod: options
     }
-
-    if (msg || data === undefined) {
-      message.error(msg || `${response.data}`);
-      return false;
-    }
-
-    return data;
-  },
-  error => {
-    if ((error.code === 'ECONNABORTED')) {
-      message.error('服务器繁忙，请稍后重试');
-    }
-    
-    return Promise.reject(false);
   }
-);
+  
+  const baseURL = process.env.NODE_ENV === 'development'
+    ? options.test 
+    : options.prod
+  
+  const http = axios.create({
+    baseURL,
+    timeout: 20000
+  })
 
-export default function request(url, options = {}) {
-  return http({ url, ...options })
+  // http request 拦截器
+  http.interceptors.request.use(
+    config => {
+      // 是否需要全局 loading
+      if (config.__loading__ !== false) {
+        Loading.show()
+      }
+      return config
+    },
+    error => {
+      Loading.hide()
+      return Promise.reject(error)
+    }
+  )
+  // http response 拦截器
+  http.interceptors.response.use(
+    config => {
+      Loading.hide()
+      return config.data
+    },
+    error => {
+      Loading.hide()
+      if (error.code === 'ECONNABORTED') {
+        Toast('请稍后重试')
+      }
+      return Promise.reject(error)
+    }
+  )
+
+  return http
 }
+
+export const $my = createHttp('//my.domain.com')

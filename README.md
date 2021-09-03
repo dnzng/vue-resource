@@ -1,2 +1,2 @@
-Some resources about Vue 。
+Some resources about VueJS.
 
